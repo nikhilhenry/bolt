@@ -24,14 +24,16 @@ export const authOptions: NextAuthOptions = {
                 },
                 password: { label: "Password", type: "password" },
             },
-            async authorize(_credentials, _req) {
+            async authorize(credentials, _req) {
                 // Add logic here to look up the user from the credentials supplied
-                const user = {
-                    id: "1",
-                    name: "J Smith",
-                    email: "jsmith@example.com",
-                };
-                if (user) {
+                if (!credentials) return null;
+                const { username, password } = credentials;
+                const user = await prisma.user.findUnique({
+                    where: {
+                        name: username,
+                    },
+                });
+                if (user && user.password === password) {
                     console.log("should have logged in successfully");
                     return user;
                 } else {
