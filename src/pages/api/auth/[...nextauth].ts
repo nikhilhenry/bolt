@@ -5,6 +5,7 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
 import { env } from "../../../env/server.mjs";
 import { prisma } from "../../../server/db/client";
+import { matchPassword } from "../../../utils/hash";
 
 export const authOptions: NextAuthOptions = {
     session: {
@@ -33,8 +34,7 @@ export const authOptions: NextAuthOptions = {
                         name: username,
                     },
                 });
-                if (user && user.password === password) {
-                    console.log("should have logged in successfully");
+                if (user && matchPassword(password, user.password)) {
                     return user;
                 } else {
                     return null;
