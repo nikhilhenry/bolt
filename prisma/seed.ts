@@ -1,9 +1,10 @@
 import { prisma } from "../src/server/db/client";
 import { hashPassword } from "../src/utils/hash";
+import { env } from "../src/env/server.mjs";
 
 async function main() {
     const name = "nikhilhenry";
-    const password = hashPassword("test-password");
+    const password = hashPassword(env.MAIN_PASSWORD);
     await prisma.user.upsert({
         where: {
             name,
