@@ -1,9 +1,6 @@
 import NextAuth, { type NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 // Prisma adapter for NextAuth, optional and can be removed
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
-
-import { env } from "../../../env/server.mjs";
 import { prisma } from "../../../server/db/client";
 import { matchPassword } from "../../../utils/hash";
 
@@ -12,8 +9,6 @@ export const authOptions: NextAuthOptions = {
         strategy: "jwt",
         maxAge: 3000,
     },
-    // Configure one or more authentication providers
-    adapter: PrismaAdapter(prisma),
     providers: [
         CredentialsProvider({
             name: "Credentials",
